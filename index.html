@@ -25,13 +25,6 @@ main{max-width:900px;margin:0 auto;padding:16px}
 .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
 .tag{font-size:.84rem;color:var(--gray);font-style:italic}
 .chk{font-size:.88rem;display:flex;gap:6px;align-items:center;cursor:pointer}
-/* scoreboard */
-.score{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-.pl{border:1.5px solid var(--m4);border-radius:12px;padding:10px;background:var(--m1);text-align:center}
-.pl input{width:100%;border:none;background:transparent;text-align:center;font-weight:700;font-family:inherit;font-size:.95rem;color:var(--m9)}
-.pl .pts{font-size:1.9rem;font-weight:900;font-family:'Noto Serif SC',serif;color:var(--m8)}
-.pl .ctl{display:flex;gap:4px;justify-content:center;flex-wrap:wrap}
-.pl .ctl button{border:1px solid var(--m4);background:#fff;border-radius:6px;cursor:pointer;padding:2px 8px;font-size:.8rem}
 /* deck */
 .deck{min-height:200px;border:2px dashed var(--m4);border-radius:14px;background:linear-gradient(160deg,#fff,var(--m1));padding:22px;text-align:center}
 .deck .vi{font-size:1.25rem;font-weight:500}
@@ -57,7 +50,7 @@ th,td{border:1px solid var(--m3);padding:6px 8px;text-align:left;vertical-align:
 th{background:var(--m2)}
 .hz-s{font-family:'Noto Serif SC',serif}
 @media(max-width:640px){main{padding:10px}.deck .zh{font-size:1.2rem}}
-@media print{.topbar,nav,.noprint,.score-card{display:none!important}.panel{display:none!important}#panel-print{display:block!important}body{background:#fff}.card{box-shadow:none;break-inside:avoid}}
+@media print{.topbar,nav,.noprint{display:none!important}.panel{display:none!important}#panel-print{display:block!important}body{background:#fff}.card{box-shadow:none;break-inside:avoid}}
 </style>
 </head>
 <body>
@@ -73,12 +66,6 @@ th{background:var(--m2)}
   <button data-tab="print">🖨️ In thẻ</button>
 </nav>
 <main>
-
-<div class="card score-card noprint">
-  <h3>🏅 Bảng điểm nhóm</h3>
-  <div class="score" id="score"></div>
-  <p class="tag">Gõ tên vào ô, bấm +1/+2/+3 để cộng điểm (bấm − để trừ nếu nhầm).</p>
-</div>
 
 <!-- LUẬT CHUNG -->
 <section class="panel active" id="panel-t0">
@@ -107,7 +94,7 @@ th{background:var(--m2)}
     <ul class="rules">
       <li><b>Người đọc:</b> bấm "Rút thẻ", đọc câu tiếng Việt, giữ đáp án (chưa bấm hiện).</li>
       <li><b>Người dịch:</b> có <b>10 giây</b> để nói tiếng Trung.</li>
-      <li><b>Còn lại:</b> nghe và chấm. Đúng hoàn toàn <b>+2</b>, sai 1 lỗi nhỏ <b>+1</b>, dùng đúng V1着V2 <b>+1</b>. Người dịch sai thì bạn kế tiếp được "cướp" câu.</li>
+      <li><b>Còn lại:</b> nghe và chấm: đúng từ vựng, đúng ngữ pháp, đúng thanh điệu (câu có V1着V2 thì phải đúng cấu trúc). Người dịch sai thì bạn kế tiếp dịch lại câu đó.</li>
     </ul>
     <div class="toolbar">
       <button class="btn" id="drawCard">🎴 Rút thẻ</button>
@@ -160,10 +147,10 @@ th{background:var(--m2)}
 <!-- HÌNH THỨC 3 -->
 <section class="panel" id="panel-t3">
   <div class="card">
-    <h2>🔍 Bắt lỗi + đấu điểm cá nhân</h2>
+    <h2>🔍 Bắt lỗi sai</h2>
     <ul class="rules">
-      <li>Mỗi người chọn <b>2 câu sai</b> (bấm "Rút câu sai" hoặc tự nghĩ thêm), đọc cho cả nhóm.</li>
-      <li>Các bạn khác <b>tìm lỗi và sửa</b>. Ai sửa đúng đầu tiên <b>+2</b>. Cả nhóm không sửa được thì <b>người ra đề +3</b>.</li>
+      <li>Lần lượt mỗi bạn bấm <b>"Rút câu sai"</b> (50 câu, không lặp), đọc câu sai cho cả nhóm nghe.</li>
+      <li>Các bạn khác <b>tìm lỗi và sửa</b>; ai sửa đúng trước thì giải thích lý do. Cả nhóm bí thì người ra đề hiện đáp án.</li>
       <li>Sau 5 câu, mỗi bạn tự viết thêm 1 câu sai mới theo lỗi mình hay mắc.</li>
     </ul>
     <div class="toolbar">
@@ -207,7 +194,41 @@ const cards=[
  {vi:"Râu của anh ấy nhiều quá, hơi đáng sợ.",zh:"他的胡子太多了，有点儿吓人。",py:"Tā de húzi tài duō le, yǒudiǎnr xiàrén.",tip:"胡子"},
  {vi:"Bác tài này rất thân thiện.",zh:"这位司机很友好。",py:"Zhè wèi sījī hěn yǒuhǎo.",tip:"友好"},
  {vi:"Anh ấy cười nói với tôi: \"Chào cậu!\"",zh:"他笑着对我说：“你好！”",py:"Tā xiàozhe duì wǒ shuō: “Nǐ hǎo!”",tip:"V1着V2"},
- {vi:"Cô ấy là cô gái ngoan, từ nhỏ đã nghe lời mẹ.",zh:"她是个乖乖女，从小就听妈妈的话。",py:"Tā shì ge guāiguāinǚ, cóngxiǎo jiù tīng māma de huà.",tip:"乖乖女"}
+ {vi:"Cô ấy là cô gái ngoan, từ nhỏ đã nghe lời mẹ.",zh:"她是个乖乖女，从小就听妈妈的话。",py:"Tā shì ge guāiguāinǚ, cóngxiǎo jiù tīng māma de huà.",tip:"乖乖女"},
+ {vi:"Tuy tôi hơi căng thẳng khi nói chuyện với người lạ, nhưng tôi vẫn chủ động chào hỏi họ.",zh:"虽然我跟陌生人说话有点儿紧张，但是我还是主动跟他们打招呼。",py:"Suīrán wǒ gēn mòshēngrén shuōhuà yǒudiǎnr jǐnzhāng, dànshì wǒ háishi zhǔdòng gēn tāmen dǎ zhāohu.",tip:"陌生 · 打招呼 · 虽然…但是…"},
+ {vi:"Nếu không giỏi bắt chuyện, bạn có thể bắt đầu từ chủ đề thời tiết.",zh:"如果你不擅长找话题，可以从天气开始聊起。",py:"Rúguǒ nǐ bú shàncháng zhǎo huàtí, kěyǐ cóng tiānqì kāishǐ liáoqǐ.",tip:"擅长 · 话题 · 如果…"},
+ {vi:"Anh ấy không chỉ nói tiếng Trung lưu loát mà còn giúp tôi chỉnh phát âm.",zh:"他不仅汉语说得很流利，而且还帮我纠正发音。",py:"Tā bùjǐn Hànyǔ shuōde hěn liúlì, érqiě hái bāng wǒ jiūzhèng fāyīn.",tip:"流利 · 纠正 · 不仅…而且…"},
+ {vi:"Thảo nào anh ấy lái xe giỏi thế, hoá ra anh ấy làm tài xế taxi mười năm rồi.",zh:"怪不得他车开得这么好，原来他当了十年出租车司机。",py:"Guàibude tā chē kāide zhème hǎo, yuánlái tā dāngle shí nián chūzūchē sījī.",tip:"怪不得 · 原来 · bổ ngữ trạng thái 得"},
+ {vi:"Cô ấy ngồi bên cửa sổ, vừa nghe nhạc vừa ngắm phong cảnh bên ngoài, trông rất thoải mái.",zh:"她坐在窗边，听着音乐看着外面的风景，看起来很轻松。",py:"Tā zuò zài chuāngbiān, tīngzhe yīnyuè kànzhe wàimiàn de fēngjǐng, kànqǐlái hěn qīngsōng.",tip:"窗 · V1着V2"},
+ {vi:"Cậu bé đeo ba lô vừa hát Kinh kịch vừa đi học, thu hút sự chú ý của nhiều người đi đường.",zh:"那个男孩儿背着书包，唱着京剧去上学，引起了很多路人的注意。",py:"Nàge nánháir bēizhe shūbāo, chàngzhe jīngjù qù shàngxué, yǐnqǐle hěn duō lùrén de zhùyì.",tip:"京剧 · 引起 · V1着V2"},
+ {vi:"Nhỏ như vậy mà đã biết quan sát ánh mắt người khác, thật hiếm có.",zh:"这么小就善于观察别人的眼神，真难得。",py:"Zhème xiǎo jiù shànyú guānchá biéren de yǎnshén, zhēn nándé.",tip:"善于 · 观察 · 眼神 · 难得"},
+ {vi:"Nụ cười chân thành giúp bạn dễ kết bạn với người lạ hơn, hiệu quả tốt hơn bạn nghĩ.",zh:"真诚的微笑能让你更容易跟陌生人交朋友，效果比你想的好。",py:"Zhēnchéng de wēixiào néng ràng nǐ gèng róngyì gēn mòshēngrén jiāo péngyou, xiàoguǒ bǐ nǐ xiǎng de hǎo.",tip:"陌生 · 效果 · 让 / 比"},
+ {vi:"Cô ấy ăn mặc rất đẹp, cử chỉ cũng rất lịch sự, để lại cho tôi ấn tượng tốt.",zh:"她的衣着很漂亮，举止也很有礼貌，给我留下了很好的印象。",py:"Tā de yīzhuó hěn piàoliang, jǔzhǐ yě hěn yǒu lǐmào, gěi wǒ liúxiàle hěn hǎo de yìnxiàng.",tip:"衣着 · 举止 · 留下"},
+ {vi:"Ông chủ quán không chỉ thân thiện với khách mà còn nhớ tên của từng khách quen.",zh:"老板不仅对客人很友好，而且记得每位熟客的名字。",py:"Lǎobǎn bùjǐn duì kèrén hěn yǒuhǎo, érqiě jìde měi wèi shúkè de míngzi.",tip:"友好 · 不仅…而且…"},
+ {vi:"Gặp lần đầu còn lạ, gặp lần hai đã quen; cậu cứ thử trò chuyện với anh ấy thêm vài lần là quen thôi.",zh:"一回生，二回熟，你多试着跟他聊几次就习惯了。",py:"Yī huí shēng, èr huí shú, nǐ duō shìzhe gēn tā liáo jǐ cì jiù xíguàn le.",tip:"一回生，二回熟 · 试着"},
+ {vi:"Tôi vừa chuyển đến, chỗ nào cũng thấy lạ, nên đặc biệt cần có người giúp tôi làm quen với nơi này.",zh:"我刚搬来，哪儿都很陌生，所以特别需要有人帮我熟悉这里。",py:"Wǒ gāng bānlái, nǎr dōu hěn mòshēng, suǒyǐ tèbié xūyào yǒu rén bāng wǒ shúxī zhèlǐ.",tip:"陌生 · 哪儿都…"},
+ {vi:"Chuyến đi này tuy mệt nhưng thu hoạch rất lớn, tôi còn quen được nhiều bạn mới.",zh:"这次旅行虽然很累，但是收获很大，我还认识了很多新朋友。",py:"Zhè cì lǚxíng suīrán hěn lèi, dànshì shōuhuò hěn dà, wǒ hái rènshile hěn duō xīn péngyou.",tip:"收获 · 虽然…但是…"},
+ {vi:"Cô giáo đã chỉnh từng lỗi phát âm của tôi, tôi thấy mình tiến bộ rất nhanh.",zh:"老师把我的发音错误一个一个地纠正过来了，我觉得自己进步很快。",py:"Lǎoshī bǎ wǒ de fāyīn cuòwù yí ge yí ge de jiūzhèng guòlái le, wǒ juéde zìjǐ jìnbù hěn kuài.",tip:"纠正 · 把字句"},
+ {vi:"Bạn tôi rất giỏi thiết kế, cô ấy đã thiết kế cho quán cà phê đó một ô cửa sổ rất đặc biệt.",zh:"我朋友很擅长设计，她给那家咖啡店设计了一扇很特别的窗。",py:"Wǒ péngyou hěn shàncháng shèjì, tā gěi nà jiā kāfēidiàn shèjìle yí shàn hěn tèbié de chuāng.",tip:"擅长 · 设计 · 窗"},
+ {vi:"Cậu ấy nói tiếng Trung chưa lưu loát lắm, nhưng nhìn ánh mắt là biết cậu ấy đã nghe hiểu.",zh:"他汉语说得不太流利，但是看他的眼神，就知道他听懂了。",py:"Tā Hànyǔ shuōde bú tài liúlì, dànshì kàn tā de yǎnshén, jiù zhīdào tā tīngdǒng le.",tip:"流利 · 眼神"},
+ {vi:"Bác tài vừa lái xe vừa kể cho tôi nghe về những trải nghiệm hồi còn trẻ của bác.",zh:"司机师傅开着车，给我讲了他年轻时的经历。",py:"Sījī shīfu kāizhe chē, gěi wǒ jiǎngle tā niánqīng shí de jīnglì.",tip:"经历 · V1着V2"},
+ {vi:"Mặt anh ấy đầy râu, trông hơi đáng sợ, nhưng thật ra rất thân thiện với mọi người.",zh:"他一脸胡子，看起来有点儿吓人，其实对人很友好。",py:"Tā yì liǎn húzi, kànqǐlái yǒudiǎnr xiàrén, qíshí duì rén hěn yǒuhǎo.",tip:"胡子 · 友好"},
+ {vi:"Mẹ cô ấy yêu cầu cô nghe lời từ nhỏ, thảo nào cô ấy luôn là cô gái ngoan.",zh:"妈妈从小就要求她听话，怪不得她一直是个乖乖女。",py:"Māma cóngxiǎo jiù yāoqiú tā tīnghuà, guàibude tā yìzhí shì ge guāiguāinǚ.",tip:"乖乖女 · 怪不得"},
+ {vi:"Tóm lại, chỉ cần bạn thấy thoải mái và chân thành thì giao tiếp sẽ rất thuận lợi.",zh:"总之，只要你感到轻松、真诚，交流就会很顺利。",py:"Zǒngzhī, zhǐyào nǐ gǎndào qīngsōng, zhēnchéng, jiāoliú jiù huì hěn shùnlì.",tip:"总之 · 只要…就…"},
+ {vi:"Trước khi bắt chuyện với người khác, hãy quan sát xem đối phương có đang bận không.",zh:"跟别人聊天儿以前，先观察一下对方是不是正忙着。",py:"Gēn biéren liáotiānr yǐqián, xiān guānchá yíxià duìfāng shì bu shì zhèng mángzhe.",tip:"观察 · 正忙着"},
+ {vi:"Hôm qua tôi trò chuyện với một người lạ trên tàu điện ngầm, không ngờ anh ấy là anh trai của bạn học tôi.",zh:"昨天我在地铁上跟一个陌生人聊天儿，没想到他是我同学的哥哥。",py:"Zuótiān wǒ zài dìtiě shang gēn yí ge mòshēngrén liáotiānr, méi xiǎngdào tā shì wǒ tóngxué de gēge.",tip:"陌生 · 没想到"},
+ {vi:"Anh ấy chủ động xin cách liên lạc của tôi, nói muốn tìm hiểu thêm về lĩnh vực thiết kế.",zh:"他主动要了我的联系方式，说想多了解一下设计方面的情况。",py:"Tā zhǔdòng yàole wǒ de liánxì fāngshì, shuō xiǎng duō liǎojiě yíxià shèjì fāngmiàn de qíngkuàng.",tip:"设计 · 主动"},
+ {vi:"Lúc đó tôi đang đứng bên cửa sổ gọi điện thoại nên không nghe thấy cậu gõ cửa.",zh:"我当时站在窗边打着电话，所以没听见你敲门。",py:"Wǒ dāngshí zhàn zài chuāngbiān dǎzhe diànhuà, suǒyǐ méi tīngjiàn nǐ qiāo mén.",tip:"窗 · V1着V2"},
+ {vi:"Mẹ dặn tôi đừng tuỳ tiện để lại số điện thoại cho người lạ, nhưng tôi vẫn sẵn lòng giúp họ.",zh:"妈妈告诉我不要随便把电话留给陌生人，但我还是愿意帮助他们。",py:"Māma gàosu wǒ búyào suíbiàn bǎ diànhuà liúgěi mòshēngrén, dàn wǒ háishi yuànyì bāngzhù tāmen.",tip:"留 · 陌生 · 把字句"},
+ {vi:"Quả thật, nói chuyện với người lạ không đáng sợ như tôi tưởng.",zh:"的确，跟陌生人说话并不像我想的那么可怕。",py:"Díquè, gēn mòshēngrén shuōhuà bìng bú xiàng wǒ xiǎng de nàme kěpà.",tip:"的确 · 陌生 · 并不像…那么…"},
+ {vi:"Anh ấy nói hai năm trước anh cũng rất sợ gặp người lạ, nhưng bây giờ đã thay đổi nhiều.",zh:"他说两年前他也很怕见陌生人，但现在已经变了很多。",py:"Tā shuō liǎng nián qián tā yě hěn pà jiàn mòshēngrén, dàn xiànzài yǐjīng biànle hěn duō.",tip:"陌生 · 变化"},
+ {vi:"Cuối tuần thoải mái như thế này thật hiếm có, chúng ta cùng đi xem Kinh kịch nhé?",zh:"这么轻松的周末真难得，我们一起去看京剧怎么样？",py:"Zhème qīngsōng de zhōumò zhēn nándé, wǒmen yìqǐ qù kàn jīngjù zěnmeyàng?",tip:"难得 · 京剧"},
+ {vi:"Hồi nhỏ ông nội dạy tôi hát Kinh kịch, trải nghiệm đó đến giờ tôi vẫn nhớ rất rõ.",zh:"小时候爷爷教我唱京剧，那段经历我现在还记得很清楚。",py:"Xiǎoshíhou yéye jiāo wǒ chàng jīngjù, nà duàn jīnglì wǒ xiànzài hái jìde hěn qīngchu.",tip:"京剧 · 经历"},
+ {vi:"Trải nghiệm này giúp tôi cảm nhận được sự thân thiện giữa người với người.",zh:"这次经历让我感受到了人与人之间的友好。",py:"Zhè cì jīnglì ràng wǒ gǎnshòudàole rén yǔ rén zhījiān de yǒuhǎo.",tip:"感受 · 经历 · 友好"},
+ {vi:"Vì có chủ đề chung, hai người nói chuyện rất lâu mà không thấy chán.",zh:"因为有共同话题，他们聊了很久也不觉得无聊。",py:"Yīnwèi yǒu gòngtóng huàtí, tāmen liáole hěn jiǔ yě bù juéde wúliáo.",tip:"话题 · 共同"},
+ {vi:"Dù mặc gì, chỉ cần thái độ tự nhiên là có thể để lại ấn tượng tốt cho người khác.",zh:"不管穿什么衣服，只要态度自然，就能给人留下好印象。",py:"Bùguǎn chuān shénme yīfu, zhǐyào tàidu zìrán, jiù néng gěi rén liúxià hǎo yìnxiàng.",tip:"衣着 · 留下 · 不管…只要…"},
+ {vi:"Đừng sợ nói sai, nói chưa lưu loát cũng không sao, quan trọng là dám nói.",zh:"别怕说错，说得不流利也没关系，重要的是敢说。",py:"Bié pà shuō cuò, shuōde bù liúlì yě méi guānxi, zhòngyào de shì gǎn shuō.",tip:"流利 · 别怕"},
+ {vi:"Tóm lại, nói nhiều, nghe nhiều, quan sát nhiều thì bạn sẽ ngày càng giỏi giao tiếp với người lạ.",zh:"总之，多说、多听、多观察，你就会越来越擅长跟陌生人交流。",py:"Zǒngzhī, duō shuō, duō tīng, duō guānchá, nǐ jiù huì yuè lái yuè shàncháng gēn mòshēngrén jiāoliú.",tip:"总之 · 擅长 · 观察 · 越来越"}
 ];
 
 const scenes=[
@@ -231,11 +252,56 @@ const shouts=[
 ];
 
 const errs=[
- {bad:"他一边笑着说。",good:"他笑着说 / 他一边笑一边说。",why:"Không dùng chồng \"一边…\" với \"V1着V2\"."},
- {bad:"他笑对我说着。",good:"他笑着对我说。",why:"\"着\" phải đứng ngay sau V1."},
- {bad:"我很流利汉语。",good:"我汉语说得很流利。",why:"\"流利\" là bổ ngữ trạng thái, cần \"说得\"."},
- {bad:"他吃着饭去上班了。(ăn xong mới đi)",good:"他吃了饭就去上班了。",why:"V1着V2 chỉ hai hành động đồng thời, không phải trình tự trước–sau."},
- {bad:"妈妈笑着，孩子跑了。",good:"妈妈笑着看孩子跑。",why:"V1 và V2 phải cùng chủ ngữ."}
+ {g:"V1着V2",bad:"他一边笑着说。",good:"他笑着说 / 他一边笑一边说。",why:"Không dùng chồng \"一边…\" với \"V1着V2\"."},
+ {g:"V1着V2",bad:"他笑对我说着。",good:"他笑着对我说。",why:"\"着\" phải đứng ngay sau V1."},
+ {g:"V1着V2",bad:"他吃着饭去上班了。(ăn xong mới đi)",good:"他吃了饭就去上班了。",why:"V1着V2 chỉ hai hành động đồng thời, không phải trình tự trước–sau."},
+ {g:"V1着V2",bad:"妈妈笑着，孩子跑了。",good:"妈妈笑着看孩子跑。",why:"V1 và V2 phải cùng chủ ngữ."},
+ {g:"V1着V2",bad:"她唱歌着走出家门。",good:"她唱着歌走出家门。",why:"\"着\" đứng ngay sau động từ \"唱\", trước tân ngữ \"歌\"."},
+ {g:"V1着V2",bad:"我听音乐着做作业。",good:"我听着音乐做作业。",why:"\"着\" đứng sau V1, không đặt sau tân ngữ."},
+ {g:"V1着V2",bad:"他开车着听音乐。",good:"他开着车听音乐。",why:"\"着\" đứng ngay sau động từ \"开\", trước tân ngữ \"车\"."},
+ {g:"V1着V2",bad:"他哭了打电话。",good:"他哭着打电话。",why:"Hai hành động đồng thời dùng V1着V2, không dùng \"了\" để nối."},
+ {g:"V1着V2",bad:"门开了着。",good:"门开着。",why:"\"着\" biểu thị trạng thái duy trì, không dùng chung với \"了\"."},
+ {g:"V1着V2",bad:"他站在着门口。",good:"他站在门口。",why:"\"站在\" đã chỉ vị trí, không thêm \"着\"."},
+ {g:"Từ vựng bài 9",bad:"我很流利汉语。",good:"我汉语说得很流利。",why:"\"流利\" là bổ ngữ trạng thái, cần \"说得\"."},
+ {g:"Từ vựng bài 9",bad:"我很怪不得你今天没来。",good:"怪不得你今天没来，原来你感冒了。",why:"\"怪不得\" là phó từ, không đi với \"很\"; thường đi cùng \"原来\"."},
+ {g:"Từ vựng bài 9",bad:"我很擅长地唱歌。",good:"我很擅长唱歌。",why:"\"擅长\" đi thẳng với động từ/danh từ, không thêm \"地\"."},
+ {g:"Từ vựng bài 9",bad:"他的发音很需要纠正的确。",good:"他的发音的确需要纠正。",why:"\"的确\" là phó từ, đặt trước vị ngữ."},
+ {g:"Từ vựng bài 9",bad:"我跟他留了电话。",good:"我给他留了电话 / 我把电话留给他了。",why:"\"留电话\" cho ai dùng \"给\"."},
+ {g:"Từ vựng bài 9",bad:"我打招呼他。",good:"我跟他打招呼。",why:"\"打招呼\" là động từ ly hợp, đối tượng đi với \"跟\"."},
+ {g:"Từ vựng bài 9",bad:"我收获了很大。",good:"我收获很大 / 我的收获很大。",why:"\"收获\" ở đây đi với tính từ \"很大\", không thêm \"了\" trước."},
+ {g:"Từ vựng bài 9",bad:"他给我很友好。",good:"他对我很友好。",why:"Thái độ đối với ai dùng \"对\"."},
+ {g:"Từ vựng bài 9",bad:"我很陌生这儿。",good:"我对这儿很陌生。",why:"\"陌生\" là tính từ, đối tượng đi với \"对\"."},
+ {g:"Từ vựng bài 9",bad:"他的话引起了很注意。",good:"他的话引起了我的注意。",why:"\"注意\" ở đây là danh từ, cần \"我的\"."},
+ {g:"Nâng cao HSK4",bad:"虽然他不擅长说话，所以他很受欢迎。",good:"虽然他不擅长说话，但是他很受欢迎。",why:"\"虽然…但是…\" là cặp quan hệ nhượng bộ, không dùng \"所以\"."},
+ {g:"Nâng cao HSK4",bad:"他不仅汉语说得很流利，但是很擅长唱京剧。",good:"他不仅汉语说得很流利，而且很擅长唱京剧。",why:"\"不仅…而且…\" là cặp tăng tiến, không dùng \"但是\"."},
+ {g:"Nâng cao HSK4",bad:"只要你真诚，才能跟陌生人交朋友。",good:"只要你真诚，就能跟陌生人交朋友 / 只有你真诚，才能跟陌生人交朋友。",why:"\"只要…就…\" (điều kiện đủ) và \"只有…才…\" (điều kiện cần) không trộn lẫn."},
+ {g:"Nâng cao HSK4",bad:"他把电话留我了。",good:"他把电话留给我了 / 他给我留了电话。",why:"Câu \"把\" cần \"留给\" + người nhận."},
+ {g:"Nâng cao HSK4",bad:"老师纠正把我的发音。",good:"老师把我的发音纠正了。",why:"\"把\" + tân ngữ phải đứng trước động từ."},
+ {g:"Nâng cao HSK4",bad:"怪不得他汉语这么好，所以他在中国住了五年。",good:"怪不得他汉语这么好，原来他在中国住了五年。",why:"\"怪不得…，原来…\": \"原来\" đưa ra nguyên nhân thật sự."},
+ {g:"Nâng cao HSK4",bad:"我们找到了共同的话题很多。",good:"我们找到了很多共同的话题。",why:"Từ chỉ số lượng đứng trước định ngữ và danh từ."},
+ {g:"Nâng cao HSK4",bad:"他笑着了跟我打招呼。",good:"他笑着跟我打招呼。",why:"\"着\" không dùng chung với \"了\"."},
+ {g:"Nâng cao HSK4",bad:"她穿衣着很漂亮。",good:"她的衣着很漂亮 / 她穿得很漂亮。",why:"\"衣着\" là danh từ, không đi sau động từ \"穿\"."},
+ {g:"Nâng cao HSK4",bad:"他善于观察了别人的眼神。",good:"他善于观察别人的眼神。",why:"\"善于\" + động từ chỉ năng lực chung, không thêm \"了\"."},
+ {g:"Nâng cao HSK4",bad:"这次经历让我感受了中国人的友好。",good:"这次经历让我感受到了中国人的友好。",why:"\"感受\" cần bổ ngữ kết quả \"到\"."},
+ {g:"Nâng cao HSK4",bad:"我一见到陌生人，才很紧张。",good:"我一见到陌生人，就很紧张。",why:"Cấu trúc \"一…就…\"."},
+ {g:"Nâng cao HSK4",bad:"他连“陌生”这个词不知道。",good:"他连“陌生”这个词都不知道。",why:"Cấu trúc \"连…都/也…\"."},
+ {g:"Nâng cao HSK4",bad:"我的包被一个陌生人拿走。",good:"我的包被一个陌生人拿走了。",why:"Câu \"被\" cần có thành phần sau động từ (như \"了\")."},
+ {g:"Nâng cao HSK4",bad:"我越来越很擅长跟陌生人聊天儿。",good:"我越来越擅长跟陌生人聊天儿。",why:"\"越来越\" không đi cùng \"很\"."},
+ {g:"Nâng cao HSK4",bad:"他的汉语比我很流利。",good:"他的汉语比我流利 / 他的汉语比我流利得多。",why:"Câu so sánh \"比\" không dùng \"很\"."},
+ {g:"Nâng cao HSK4",bad:"她唱京剧得很好。",good:"她京剧唱得很好 / 她唱京剧唱得很好。",why:"Bổ ngữ trạng thái \"得\" phải đứng ngay sau động từ."},
+ {g:"Nâng cao HSK4",bad:"昨天我跟陌生人说话了很久。",good:"昨天我跟陌生人说了很久(的)话。",why:"\"说话\" là động từ ly hợp; \"了\" và thời lượng đặt giữa \"说\" và \"话\"."},
+ {g:"Nâng cao HSK4",bad:"我没跟陌生人说话过。",good:"我没跟陌生人说过话。",why:"\"过\" đứng ngay sau động từ \"说\"; \"说话\" là động từ ly hợp."},
+ {g:"Nâng cao HSK4",bad:"除了京剧以外，他很喜欢唱歌。",good:"除了京剧以外，他还喜欢唱歌。",why:"\"除了…以外\" nghĩa \"ngoài ra còn\" thì cần \"还/也\"."},
+ {g:"Nâng cao HSK4",bad:"我感兴趣京剧。",good:"我对京剧感兴趣。",why:"\"对…感兴趣\": đối tượng đi với \"对\" đứng trước."},
+ {g:"Nâng cao HSK4",bad:"我很比较擅长跟陌生人聊天儿。",good:"我比较擅长跟陌生人聊天儿。",why:"\"比较\" là phó từ mức độ, không đi với \"很\"."},
+ {g:"Nâng cao HSK4",bad:"关于我来说，这是一次难得的经历。",good:"对我来说，这是一次难得的经历。",why:"\"对…来说\" nghĩa \"đối với…\", không dùng \"关于\"."},
+ {g:"Nâng cao HSK4",bad:"听说他女儿设计很擅长。",good:"听说他女儿很擅长设计。",why:"\"擅长\" + tân ngữ (lĩnh vực), phó từ đặt trước \"擅长\"."},
+ {g:"Nâng cao HSK4",bad:"我是昨天在地铁上跟这位陌生人聊起来。",good:"我是昨天在地铁上跟这位陌生人聊起来的。",why:"Cấu trúc nhấn mạnh \"是…的\" cần \"的\" cuối câu."},
+ {g:"Nâng cao HSK4",bad:"我想了解设计一下。",good:"我想了解一下设计。",why:"\"一下\" đứng ngay sau động từ, trước tân ngữ."},
+ {g:"Nâng cao HSK4",bad:"昨天我跟那位司机聊过天儿，明天我又想跟他聊。",good:"昨天我跟那位司机聊过天儿，明天我想再跟他聊。",why:"\"又\" dùng cho việc đã lặp lại, \"再\" dùng cho việc sẽ lặp lại."},
+ {g:"Nâng cao HSK4",bad:"我没擅长跟陌生人说话。",good:"我不擅长跟陌生人说话。",why:"\"擅长\" là trạng thái, phủ định bằng \"不\"."},
+ {g:"Nâng cao HSK4",bad:"小男孩帮纠正我的发音。",good:"小男孩帮我纠正发音。",why:"Cấu trúc \"帮 + người + động từ\"."},
+ {g:"Nâng cao HSK4",bad:"她很乖乖女。",good:"她是个乖乖女 / 她很乖。",why:"\"乖乖女\" là danh từ, không đi sau phó từ \"很\"."}
 ];
 
 /* ============ TIỆN ÍCH ============ */
@@ -261,19 +327,6 @@ document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()
   document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
   b.classList.add('active');$('panel-'+b.dataset.tab).classList.add('active');
 }));
-
-/* ============ BẢNG ĐIỂM ============ */
-(function(){
-  const wrap=$('score');
-  ['Bạn 1','Bạn 2','Bạn 3','Bạn 4'].forEach((n,i)=>{
-    const d=document.createElement('div');d.className='pl';
-    d.innerHTML=`<input value="${n}" aria-label="Tên"><div class="pts">0</div>
-    <div class="ctl"><button data-d="-1">−1</button><button data-d="1">+1</button><button data-d="2">+2</button><button data-d="3">+3</button></div>`;
-    let pts=0;
-    d.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{pts+=parseInt(b.dataset.d);d.querySelector('.pts').textContent=pts}));
-    wrap.appendChild(d);
-  });
-})();
 
 /* ============ HÌNH THỨC 1 ============ */
 const st1={};let cur1=null;
@@ -312,11 +365,11 @@ $('showShout').addEventListener('click',()=>{if(curShout)$('shoutBox').innerHTML
 const st3={};let curE=null;
 $('drawErr').addEventListener('click',()=>{
   curE=errs[pickNoRepeat(errs,st3)];
-  $('errBox').innerHTML=`<div class="tag">Câu có lỗi — tìm và sửa:</div><div class="zh" style="font-family:'Noto Serif SC',serif;font-size:1.5rem;font-weight:700">${curE.bad}</div>
+  $('errBox').innerHTML=`<div class="tag">Nhóm lỗi: ${curE.g} — tìm và sửa:</div><div class="zh" style="font-family:'Noto Serif SC',serif;font-size:1.5rem;font-weight:700">${curE.bad}</div>
   <div class="ans" id="errAns"><div class="right hz-s" style="font-size:1.3rem">✓ ${curE.good}</div><div class="tag">${curE.why}</div></div>`;
 });
 $('showErr').addEventListener('click',()=>{const a=$('errAns');if(a)a.classList.toggle('show')});
-$('errTable').innerHTML='<tr><th>Câu sai</th><th>Sửa đúng</th><th>Lý do</th></tr>'+errs.map(e=>`<tr><td class="hz-s wrong">${e.bad}</td><td class="hz-s right">${e.good}</td><td>${e.why}</td></tr>`).join('');
+$('errTable').innerHTML='<tr><th>Nhóm</th><th>Câu sai</th><th>Sửa đúng</th><th>Lý do</th></tr>'+errs.map(e=>`<tr><td>${e.g}</td><td class="hz-s wrong">${e.bad}</td><td class="hz-s right">${e.good}</td><td>${e.why}</td></tr>`).join('');
 
 /* ============ IN THẺ ============ */
 $('printTable').innerHTML='<tr><th>#</th><th>Tiếng Việt</th><th>Tiếng Trung + pinyin</th></tr>'+cards.map((c,i)=>`<tr><td>${i+1}</td><td>${c.vi}</td><td><span class="hz-s">${c.zh}</span><br><span class="pinyin">${c.py}</span></td></tr>`).join('');
