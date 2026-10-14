@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第四课 · Ôn tập nhóm Việt–Trung — Bài 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@400;500;700&family=Zilla+Slab:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2b3a55;--sand:#f4efe6;--accent:#b8674a;--m9:var(--ink);--m8:var(--ink);--m7:var(--ink);--m6:var(--accent);--m4:color-mix(in srgb,var(--ink) 35%,var(--sand));--m3:color-mix(in srgb,var(--ink) 20%,var(--sand));--m2:color-mix(in srgb,var(--ink) 10%,var(--sand));--m1:color-mix(in srgb,var(--ink) 5%,var(--sand));--cream:var(--sand);--paper:color-mix(in srgb,#fff 55%,var(--sand));--gold:var(--accent);--red:var(--accent);--ok:var(--ink);--gray:color-mix(in srgb,var(--ink) 60%,var(--sand))}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Noto Sans SC',sans-serif;line-height:1.6;padding-bottom:50px;overflow-x:hidden}
+h1,h2,h3{font-family:'Noto Serif SC',serif;color:var(--m9);margin:0 0 .5em}
+.pinyin{font-family:'Zilla Slab',serif;font-style:italic;color:var(--m6)}
+.topbar{background:var(--ink);color:var(--sand);padding:14px 20px;border-bottom:3px solid var(--accent)}
+.topbar a{color:var(--sand);opacity:.75;font-size:.82rem;text-decoration:none}.topbar a:hover{opacity:1}
+.topbar h1{color:var(--sand);font-size:1.3rem;margin:0}.topbar .sub{font-size:.85rem;opacity:.9}
+nav{display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px;background:var(--m1);border-bottom:2px solid var(--m3);position:sticky;top:0;z-index:10}
+nav button{font-family:'Noto Serif SC',serif;font-weight:700;cursor:pointer;background:var(--paper);border:1.5px solid var(--m3);color:var(--m8);padding:8px 14px;border-radius:10px;font-size:.92rem}
+nav button.active{background:var(--m7);color:var(--sand);border-color:var(--m7)}
+main{max-width:900px;margin:0 auto;padding:16px}
+.panel{display:none}.panel.active{display:block}
+.card{background:var(--paper);border:1px solid var(--m2);border-radius:14px;padding:16px 18px;margin-bottom:16px;box-shadow:0 1px 4px rgba(43,58,85,.08)}
+.btn{font-family:inherit;cursor:pointer;border:none;border-radius:8px;padding:8px 16px;font-size:.92rem;font-weight:500;background:var(--m6);color:var(--sand)}
+.btn:hover{background:color-mix(in srgb,var(--accent) 85%,var(--ink))}.btn.sec{background:var(--m2);color:var(--m9)}.btn.sec:hover{background:var(--m3)}
+.btn.sm{padding:3px 10px;font-size:.8rem}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.tag{font-size:.84rem;color:var(--gray);font-style:italic}
+.chk{font-size:.88rem;display:flex;gap:6px;align-items:center;cursor:pointer}
+/* deck */
+.deck{min-height:200px;border:2px dashed var(--m4);border-radius:14px;background:var(--paper);padding:22px;text-align:center}
+.deck .vi{font-size:1.25rem;font-weight:500}
+.deck .num{font-size:.8rem;color:var(--gray)}
+.deck .ans{display:none;margin-top:14px;padding-top:12px;border-top:1px dashed var(--m4)}
+.deck .ans.show{display:block}
+.deck .zh{font-family:'Noto Serif SC',serif;font-size:1.5rem;font-weight:700;color:var(--m9)}
+.deck .py{font-size:1.05rem;margin-top:4px}
+.timer{font-family:'Noto Serif SC',serif;font-size:2rem;font-weight:900;color:var(--m8);min-width:70px;text-align:center}
+.timer.low{color:var(--red)}
+.rules li{margin-bottom:4px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}
+.chip{white-space:nowrap;background:var(--m2);color:var(--m9);border-radius:20px;padding:2px 12px;font-family:'Noto Serif SC',serif;font-weight:700}
+.chip .pinyin{font-size:.78rem;margin-left:4px;font-weight:400}
+.checklist label{display:block;margin:4px 0;cursor:pointer}
+.dlg .ln{padding:6px 0;border-bottom:1px solid var(--m2);display:grid;grid-template-columns:24px 1fr;gap:8px}
+.dlg .sp{font-weight:700;color:var(--m7)}.dlg .hz{font-family:'Noto Serif SC',serif;font-size:1.05rem}
+.hide-py .pinyin{display:none}
+.hl{color:var(--red);font-weight:700;background:color-mix(in srgb,var(--accent) 14%,var(--sand));padding:0 2px;border-radius:3px}
+.wrong{color:var(--red);text-decoration:line-through}.right{color:var(--ok);font-weight:700}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{border:1px solid var(--m3);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--m2)}
+.hz-s{font-family:'Noto Serif SC',serif}
+@media(max-width:640px){main{padding:10px}.deck .zh{font-size:1.2rem}}
+@media print{.topbar,nav,.noprint{display:none!important}.panel{display:none!important}#panel-print{display:block!important}body{background:#fff}.card{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="index.html">← Danh sách bài</a>
+  <h1>第四课 · 自助游 — Ôn tập nhóm Việt → Trung</h1>
+  <div class="sub">Tự học nhóm 3–4 bạn · không cần giáo viên · HSK3–4 · 速通汉语 中级1</div>
+</div>
+<nav>
+  <button class="active" data-tab="t0">📖 Luật chung</button>
+  <button data-tab="t1">🃏 1. Thẻ Việt→Trung</button>
+  <button data-tab="t2">🎭 2. Bốc thăm tình huống</button>
+  <button data-tab="t3">🔍 3. Bắt lỗi</button>
+  <button data-tab="print">🖨️ In thẻ</button>
+</nav>
+<main>
+
+<!-- LUẬT CHUNG -->
+<section class="panel active" id="panel-t0">
+  <div class="card">
+    <h2>Nguyên tắc chung</h2>
+    <ul class="rules">
+      <li><b>Ai cầm đáp án thì không dịch.</b> Mỗi lượt đổi vai: người đọc – người dịch – người chấm.</li>
+      <li>Trước khi chơi, ôn nhanh từ khoá: <span class="chip">自助游</span><span class="chip">假期</span><span class="chip">欣赏</span><span class="chip">功课</span><span class="chip">攻略</span><span class="chip">方式</span><span class="chip">见闻</span><span class="chip">挑选</span><span class="chip">西瓜</span><span class="chip">支付</span><span class="chip">古城墙</span><span class="chip">兵马俑</span><span class="chip">旅行社</span><span class="chip">特色</span><span class="chip">走马观花</span><span class="chip">深度游</span><span class="chip">精力</span><span class="chip">音乐会</span><span class="chip">博物馆</span></li>
+      <li>Ngữ pháp trọng tâm: <b>情态补语</b> V + 得 + bổ ngữ (有 tân ngữ thì lặp động từ: 打篮球<b>打得</b>很好) · <b>数量补语</b>: số lần (见过他<b>一次</b>), thời lượng (走了<b>二十分钟</b>), chênh lệch so sánh (比昨天低<b>十度</b>).</li>
+      <li>Khi chấm: đúng từ vựng – đúng ngữ pháp – đúng thanh điệu.</li>
+    </ul>
+    <h3>Lịch gợi ý (45 phút)</h3>
+    <table>
+      <tr><th>Thời gian</th><th>Hoạt động</th></tr>
+      <tr><td>0–15'</td><td>Hình thức 1 — khởi động, nhớ từ</td></tr>
+      <tr><td>15–35'</td><td>Hình thức 2 — 1–2 tình huống</td></tr>
+      <tr><td>35–45'</td><td>Hình thức 3 — chốt lỗi sai</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- HÌNH THỨC 1 -->
+<section class="panel" id="panel-t1">
+  <div class="card">
+    <h2>🃏 Thẻ Việt → Trung</h2>
+    <ul class="rules">
+      <li><b>Người đọc:</b> bấm "Rút thẻ", đọc câu tiếng Việt, giữ đáp án (chưa bấm hiện).</li>
+      <li><b>Người dịch:</b> có <b>10 giây</b> để nói tiếng Trung.</li>
+      <li><b>Còn lại:</b> nghe và chấm: đúng từ vựng, đúng ngữ pháp, đúng thanh điệu (câu có 情态补语 / 数量补语 thì phải đúng vị trí). Người dịch sai thì bạn kế tiếp dịch lại câu đó.</li>
+    </ul>
+    <div class="toolbar">
+      <button class="btn" id="drawCard">🎴 Rút thẻ</button>
+      <button class="btn sec" id="startTimer1">⏱ Bắt đầu 10 giây</button>
+      <div class="timer" id="timer1">10</div>
+      <button class="btn sec" id="showAns">👁 Hiện đáp án</button>
+      <button class="btn sec" id="speakAns">🔊 Nghe</button>
+      <label class="chk"><input type="checkbox" id="togglePy" checked> Hiện pinyin</label>
+    </div>
+    <div class="deck" id="deck"><span class="tag">Bấm "Rút thẻ" để bắt đầu.</span></div>
+    <p class="tag" id="deckInfo"></p>
+  </div>
+</section>
+
+<!-- HÌNH THỨC 2 -->
+<section class="panel" id="panel-t2">
+  <div class="card">
+    <h2>🎭 Bốc thăm tình huống</h2>
+    <ul class="rules">
+      <li>2 bạn <b>diễn</b>, 1–2 bạn <b>giám khảo</b> (dùng checklist). Sau mỗi tình huống đổi vai.</li>
+      <li><b>2 phút chuẩn bị:</b> chỉ ghi ý chính bằng tiếng Việt, không viết câu tiếng Trung.</li>
+      <li><b>Diễn 6–8 lượt thoại</b>, không nhìn giấy.</li>
+      <li><b>Giám khảo hô bất ngờ</b> 2 câu tiếng Việt, người bị gọi dịch trong 5 giây.</li>
+    </ul>
+    <div class="toolbar">
+      <button class="btn" id="drawScene">🎲 Bốc tình huống</button>
+      <button class="btn sec" id="startTimer2">⏱ 2 phút chuẩn bị</button>
+      <div class="timer" id="timer2">2:00</div>
+    </div>
+    <div class="deck" id="sceneBox"><span class="tag">Bấm "Bốc tình huống".</span></div>
+  </div>
+
+  <div class="card" id="sceneExtra" style="display:none">
+    <h3>✅ Checklist chấm (giám khảo)</h3>
+    <div class="checklist">
+      <label><input type="checkbox"> Đủ 3 từ bắt buộc</label>
+      <label><input type="checkbox"> Có ít nhất 1 câu 情态补语 (V得…)</label>
+      <label><input type="checkbox"> Có ít nhất 1 câu 数量补语 (次/回 · thời lượng · 比…)</label>
+      <label><input type="checkbox"> Không ngắt quãng quá 5 giây</label>
+      <label><input type="checkbox"> Thanh điệu rõ ràng</label>
+    </div>
+    <h3 style="margin-top:14px">📣 Câu hô phản xạ (giám khảo đọc, 5 giây)</h3>
+    <div class="toolbar"><button class="btn sm" id="drawShout">Hô một câu</button><button class="btn sm sec" id="showShout">Hiện đáp án</button></div>
+    <div id="shoutBox" class="tag">—</div>
+    <h3 style="margin-top:14px">💬 Hội thoại mẫu (xem sau khi diễn xong)</h3>
+    <button class="btn sm sec" id="showDlg">Hiện / ẩn hội thoại mẫu</button>
+    <div class="dlg" id="dlgBox" style="display:none;margin-top:8px"></div>
+  </div>
+</section>
+
+<!-- HÌNH THỨC 3 -->
+<section class="panel" id="panel-t3">
+  <div class="card">
+    <h2>🔍 Bắt lỗi sai</h2>
+    <ul class="rules">
+      <li>Lần lượt mỗi bạn bấm <b>"Rút câu sai"</b> (52 câu, không lặp), đọc câu sai cho cả nhóm nghe.</li>
+      <li>Các bạn khác <b>tìm lỗi và sửa</b>; ai sửa đúng trước thì giải thích lý do. Cả nhóm bí thì người ra đề hiện đáp án.</li>
+      <li>Sau 5 câu, mỗi bạn tự viết thêm 1 câu sai mới theo lỗi mình hay mắc.</li>
+    </ul>
+    <div class="toolbar">
+      <button class="btn" id="drawErr">🎯 Rút câu sai</button>
+      <button class="btn sec" id="showErr">👁 Hiện đáp án</button>
+    </div>
+    <div class="deck" id="errBox"><span class="tag">Bấm "Rút câu sai".</span></div>
+  </div>
+  <div class="card">
+    <h3>Toàn bộ ngân hàng lỗi</h3>
+    <table id="errTable"></table>
+  </div>
+</section>
+
+<!-- IN THẺ -->
+<section class="panel" id="panel-print">
+  <div class="card">
+    <div class="noprint toolbar"><button class="btn" onclick="window.print()">🖨️ In / Lưu PDF</button><span class="tag">Chỉ in phần bảng thẻ này. Cắt rời hoặc gấp đôi để học nhóm.</span></div>
+    <h2>Bộ thẻ Việt → Trung (Bài 4)</h2>
+    <table id="printTable"></table>
+  </div>
+</section>
+
+</main>
+
+<script>
+/* ============ DỮ LIỆU ============ */
+const cards=[
+ {vi:"Hễ đến kỳ nghỉ là tôi thích tự mình đeo ba lô đi du lịch.",zh:"我一到假期，就喜欢自己背着包去旅行。",py:"Wǒ yí dào jiàqī, jiù xǐhuan zìjǐ bēizhe bāo qù lǚxíng.",tip:"假期 · 一…就…"},
+ {vi:"Tôi khá nể những người thích tự túc du lịch.",zh:"我比较欣赏喜欢自助游的人。",py:"Wǒ bǐjiào xīnshǎng xǐhuan zìzhùyóu de rén.",tip:"欣赏 · 自助游"},
+ {vi:"Trước khi xuất phát phải làm rất nhiều \"bài tập\" (chuẩn bị).",zh:"出发之前，要做很多功课。",py:"Chūfā zhīqián, yào zuò hěn duō gōngkè.",tip:"做功课"},
+ {vi:"Trước khi đi du lịch, tôi thường lên mạng tra cẩm nang.",zh:"旅行之前，我常常上网查攻略。",py:"Lǚxíng zhīqián, wǒ chángcháng shàngwǎng chá gōnglüè.",tip:"查攻略"},
+ {vi:"Chúng ta đều thích du lịch, chỉ là cách thức du lịch khác nhau.",zh:"我们都喜欢旅行，只是旅行的方式不同。",py:"Wǒmen dōu xǐhuan lǚxíng, zhǐshì lǚxíng de fāngshì bùtóng.",tip:"方式 · 只是"},
+ {vi:"Anh ấy đọc sách nhiều, đi khắp nơi trên thế giới cũng nhiều.",zh:"他书读得多，世界各地跑得也多。",py:"Tā shū dú de duō, shìjiè gèdì pǎo de yě duō.",tip:"情态补语"},
+ {vi:"Anh ấy viết những điều thấy nghe được khi du lịch rất hay.",zh:"他旅行见闻写得很好。",py:"Tā lǚxíng jiànwén xiě de hěn hǎo.",tip:"见闻 · 情态补语"},
+ {vi:"Tôi đã gặp bố của Triệu Lượng một lần.",zh:"我见过赵亮爸爸一次。",py:"Wǒ jiànguo Zhào Liàng bàba yí cì.",tip:"动量补语"},
+ {vi:"Bố anh ấy dạy tôi cách chọn dưa hấu.",zh:"他爸爸教我怎么挑选西瓜。",py:"Tā bàba jiāo wǒ zěnme tiāoxuǎn xīguā.",tip:"挑选 · 西瓜"},
+ {vi:"Món bố anh ấy nấu cũng ngon lắm, tôi đã ăn mấy lần rồi.",zh:"他爸爸的菜做得也好吃，我已经吃过好几回了。",py:"Tā bàba de cài zuò de yě hǎochī, wǒ yǐjīng chīguo hǎojǐ huí le.",tip:"情态补语 · 动量补语"},
+ {vi:"Bây giờ ở Trung Quốc có thể thanh toán bằng điện thoại.",zh:"现在在中国可以用手机支付。",py:"Xiànzài zài Zhōngguó kěyǐ yòng shǒujī zhīfù.",tip:"支付"},
+ {vi:"Tường thành cổ Tây An chúng ta phải đi dạo một vòng.",zh:"西安古城墙我们要去走一回。",py:"Xī'ān gǔchéngqiáng wǒmen yào qù zǒu yì huí.",tip:"古城墙 · 动量补语"},
+ {vi:"Tượng binh mã Tây An tôi đã đi xem hai lần rồi.",zh:"西安的兵马俑我已经去看过两次了。",py:"Xī'ān de bīngmǎyǒng wǒ yǐjīng qù kànguo liǎng cì le.",tip:"兵马俑 · 动量补语"},
+ {vi:"Còn chưa đi mà cậu đã tưởng tượng đẹp thế rồi.",zh:"还没去呢，你已经想得很美了。",py:"Hái méi qù ne, nǐ yǐjīng xiǎng de hěn měi le.",tip:"情态补语"},
+ {vi:"Từ trường về ký túc xá tôi đi bộ mất hai mươi phút.",zh:"我从学校到宿舍走了二十分钟。",py:"Wǒ cóng xuéxiào dào sùshè zǒule èrshí fēnzhōng.",tip:"时量补语"},
+ {vi:"Nhiệt độ hôm nay thấp hơn hôm qua mười độ.",zh:"今天的气温比昨天低十度。",py:"Jīntiān de qìwēn bǐ zuótiān dī shí dù.",tip:"比较数量补语"},
+ {vi:"Anh ấy chơi bóng rổ rất giỏi.",zh:"他打篮球打得很好。",py:"Tā dǎ lánqiú dǎ de hěn hǎo.",tip:"情态补语 — lặp động từ"},
+ {vi:"Tôi học tiếng Trung được hai năm rồi.",zh:"我学了两年汉语了。",py:"Wǒ xuéle liǎng nián Hànyǔ le.",tip:"时量补语"},
+ {vi:"Người xưa nói: nên đọc vạn quyển sách, đi vạn dặm đường.",zh:"古人说，应该“读万卷书，行万里路”。",py:"Gǔrén shuō, yīnggāi “dú wàn juàn shū, xíng wàn lǐ lù”.",tip:"读万卷书，行万里路"},
+ {vi:"Tự túc du lịch có thể rèn luyện khả năng độc lập của một người.",zh:"自助游能锻炼一个人独立的能力。",py:"Zìzhùyóu néng duànliàn yí ge rén dúlì de nénglì.",tip:"自助游 · 锻炼"},
+ {vi:"Lần này tôi không đi theo tour, tôi muốn tự túc.",zh:"这次我不跟旅行社去，我想自助游。",py:"Zhè cì wǒ bù gēn lǚxíngshè qù, wǒ xiǎng zìzhùyóu.",tip:"旅行社 · 自助游"},
+ {vi:"Kiểu du lịch như vậy, chúng ta gọi là \"cưỡi ngựa xem hoa\".",zh:"这样的旅行，我们叫“走马观花”。",py:"Zhèyàng de lǚxíng, wǒmen jiào “zǒumǎ-guānhuā”.",tip:"走马观花"},
+ {vi:"Đến nơi rồi, tôi muốn ăn chút món đặc sản.",zh:"到了那里，我想吃点儿特色菜。",py:"Dàole nàlǐ, wǒ xiǎng chī diǎnr tèsè cài.",tip:"特色"},
+ {vi:"Du lịch chuyên sâu cần bỏ ra nhiều thời gian và công sức.",zh:"深度游需要花很多时间和精力。",py:"Shēndùyóu xūyào huā hěn duō shíjiān hé jīnglì.",tip:"深度游 · 精力"},
+ {vi:"Ở Tây An, chúng tôi đã đi bảo tàng ba lần.",zh:"在西安，我们去了三次博物馆。",py:"Zài Xī'ān, wǒmen qùle sān cì bówùguǎn.",tip:"博物馆 · 动量补语"},
+ {vi:"Tối qua tôi đi nghe một buổi hoà nhạc.",zh:"昨天晚上我去听了一场音乐会。",py:"Zuótiān wǎnshang wǒ qù tīngle yì chǎng yīnyuèhuì.",tip:"音乐会 · 一场"},
+ {vi:"Buổi sáng tôi đi dạo vài tiếng đồng hồ.",zh:"早上我散了几个小时的步。",py:"Zǎoshang wǒ sànle jǐ ge xiǎoshí de bù.",tip:"时量补语 · động từ ly hợp 散步"},
+ {vi:"Anh ấy chạy nhanh hơn tôi nhiều.",zh:"他跑得比我快多了。",py:"Tā pǎo de bǐ wǒ kuài duō le.",tip:"情态补语 + 比"},
+ {vi:"Anh trai tôi cao hơn tôi năm xăng-ti-mét.",zh:"哥哥比我高五厘米。",py:"Gēge bǐ wǒ gāo wǔ límǐ.",tip:"比较数量补语"},
+ {vi:"Vé tàu đắt hơn vé máy bay hai trăm tệ.",zh:"火车票比机票贵两百块。",py:"Huǒchēpiào bǐ jīpiào guì liǎngbǎi kuài.",tip:"比较数量补语"},
+ {vi:"Tôi đợi anh ấy nửa tiếng mà anh ấy vẫn chưa đến.",zh:"我等了他半个小时，他还没来。",py:"Wǒ děngle tā bàn ge xiǎoshí, tā hái méi lái.",tip:"时量补语 — đại từ đứng trước"},
+ {vi:"Hôm qua leo núi, chúng tôi mệt đến mức không muốn nói chuyện.",zh:"昨天爬山，我们累得不想说话。",py:"Zuótiān páshān, wǒmen lèi de bù xiǎng shuōhuà.",tip:"A + 得 + 情态补语"},
+ {vi:"Trước khi đi, tôi tìm hiểu thời tiết, giao thông, khách sạn… ở đó.",zh:"去之前，我先了解那里的天气、交通、宾馆等信息。",py:"Qù zhīqián, wǒ xiān liǎojiě nàlǐ de tiānqì, jiāotōng, bīnguǎn děng xìnxī.",tip:"了解 · 信息"},
+ {vi:"Sau đó tự mình sắp xếp lộ trình, đặt vé máy bay và khách sạn.",zh:"然后自己安排路线，订机票和酒店。",py:"Ránhòu zìjǐ ānpái lùxiàn, dìng jīpiào hé jiǔdiàn.",tip:"安排路线 · 订"},
+ {vi:"Xem ra mọi người đều rất biết sống.",zh:"看来你们都很会生活。",py:"Kànlái nǐmen dōu hěn huì shēnghuó.",tip:"看来 · 会生活"},
+ {vi:"Bố cậu chắc chắn là người rất yêu cuộc sống.",zh:"你爸爸一定是个很热爱生活的人。",py:"Nǐ bàba yídìng shì ge hěn rè'ài shēnghuó de rén.",tip:"热爱生活"},
+ {vi:"Chuyến đi này chắc chắn sẽ để lại cho chúng ta kỷ niệm sâu sắc.",zh:"这次旅行一定会给我们留下深刻的记忆。",py:"Zhè cì lǚxíng yídìng huì gěi wǒmen liúxià shēnkè de jìyì.",tip:"给…留下深刻的记忆"},
+ {vi:"Hồi nhỏ, hễ bố rảnh là dẫn cả nhà đi du lịch.",zh:"小时候，爸爸只要有空儿，就带着全家去旅行。",py:"Xiǎoshíhou, bàba zhǐyào yǒu kòngr, jiù dàizhe quánjiā qù lǚxíng.",tip:"只要…就…"},
+ {vi:"Ít tiền thì đi chỗ gần một chút; đủ tiền rồi thì đi chỗ xa hơn.",zh:"钱不多，就去近一点儿的地方；钱够了，就去远一点儿的地方。",py:"Qián bù duō, jiù qù jìn yìdiǎnr de dìfang; qián gòu le, jiù qù yuǎn yìdiǎnr de dìfang.",tip:"…，就…"},
+ {vi:"Còn mấy ngày nữa là được nghỉ rồi, chúng ta cùng đi Tây An một chuyến nhé?",zh:"再过几天就要放假了，我们一起去一次西安吧？",py:"Zài guò jǐ tiān jiù yào fàngjià le, wǒmen yìqǐ qù yí cì Xī'ān ba?",tip:"就要…了 · 动量补语"},
+ {vi:"Anh ấy nấu ăn rất ngon.",zh:"他做饭做得很好吃。",py:"Tā zuò fàn zuò de hěn hǎochī.",tip:"情态补语 — lặp động từ"},
+ {vi:"Cô ấy hát hay cực kỳ.",zh:"她唱歌唱得好极了。",py:"Tā chàng gē chàng de hǎo jí le.",tip:"情态补语 · 极了"},
+ {vi:"Lợi ích lớn nhất là có thể học được nhiều thứ mà sách vở không có.",zh:"最大的好处是可以学会很多书本里没有的东西。",py:"Zuì dà de hǎochù shì kěyǐ xuéhuì hěn duō shūběn lǐ méiyǒu de dōngxi.",tip:"好处 · 书本"},
+ {vi:"Đến khi rời đi, tôi đã có ấn tượng rất sâu sắc về nơi này.",zh:"等我离开的时候，对这里已经有了很深刻的印象。",py:"Děng wǒ líkāi de shíhou, duì zhèlǐ yǐjīng yǒule hěn shēnkè de yìnxiàng.",tip:"等…的时候 · 深刻"},
+ {vi:"Tôi muốn ở đó một thời gian để thưởng thức thật kỹ văn hoá nơi đó.",zh:"我想在那里住一段时间，好好儿欣赏那里的文化。",py:"Wǒ xiǎng zài nàlǐ zhù yí duàn shíjiān, hǎohāor xīnshǎng nàlǐ de wénhuà.",tip:"欣赏 · 一段时间"},
+ {vi:"Bạn đã đến Hà Nội mấy lần rồi?",zh:"你来过几次河内？",py:"Nǐ láiguo jǐ cì Hénèi?",tip:"动量补语"},
+ {vi:"Tôi ngủ tám tiếng nhưng vẫn rất mệt.",zh:"我睡了八个小时，可是还是很累。",py:"Wǒ shuìle bā ge xiǎoshí, kěshì háishi hěn lèi.",tip:"时量补语"},
+ {vi:"Chuyến bay bị trễ, chúng tôi đợi ở sân bay ba tiếng.",zh:"航班晚点了，我们在机场等了三个小时。",py:"Hángbān wǎndiǎn le, wǒmen zài jīchǎng děngle sān ge xiǎoshí.",tip:"时量补语"},
+ {vi:"Năm nay khách du lịch nhiều hơn năm ngoái hai nghìn người.",zh:"今年的游客比去年多两千人。",py:"Jīnnián de yóukè bǐ qùnián duō liǎngqiān rén.",tip:"比较数量补语"},
+ {vi:"Tôi theo người dân địa phương đến quán nhỏ ăn mấy lần những món bình thường nhất.",zh:"我跟着当地人去小店吃了几回最普通的菜。",py:"Wǒ gēnzhe dāngdìrén qù xiǎodiàn chīle jǐ huí zuì pǔtōng de cài.",tip:"动量补语 · 当地人"}
+];
+
+const scenes=[
+ {icon:"🗺️",title:"Lên kế hoạch tự túc đi Tây An",words:[["攻略","gōnglüè"],["古城墙","gǔchéngqiáng"],["兵马俑","bīngmǎyǒng"]],
+  dlg:[["A","再过几天就要放假了，我们一起去西安自助游一次，怎么样？","Zài guò jǐ tiān jiù yào fàngjià le, wǒmen yìqǐ qù Xī'ān zìzhùyóu yí cì, zěnmeyàng?"],["B","好啊！我还没去过西安呢。你去过几次？","Hǎo a! Wǒ hái méi qùguo Xī'ān ne. Nǐ qùguo jǐ cì?"],["A","我去过一次，那是很小的时候。","Wǒ qùguo yí cì, nà shì hěn xiǎo de shíhou."],["B","那我们先上网查查攻略吧。","Nà wǒmen xiān shàngwǎng chácha gōnglüè ba."],["A","我已经查了。攻略说古城墙一定要去走一回。","Wǒ yǐjīng chá le. Gōnglüè shuō gǔchéngqiáng yídìng yào qù zǒu yì huí."],["B","兵马俑呢？我特别想去看一次。","Bīngmǎyǒng ne? Wǒ tèbié xiǎng qù kàn yí cì."],["A","当然要去！从市里坐车到兵马俑要一个多小时。","Dāngrán yào qù! Cóng shì lǐ zuò chē dào bīngmǎyǒng yào yí ge duō xiǎoshí."],["B","还没去呢，我已经想得很美了！","Hái méi qù ne, wǒ yǐjīng xiǎng de hěn měi le!"]]},
+ {icon:"🎒",title:"Tự túc hay đi tour? — tranh luận",words:[["自助游","zìzhùyóu"],["旅行社","lǚxíngshè"],["方式","fāngshì"]],
+  dlg:[["A","这个假期你打算怎么去旅行？","Zhège jiàqī nǐ dǎsuan zěnme qù lǚxíng?"],["B","我想跟旅行社去，不用自己做功课。","Wǒ xiǎng gēn lǚxíngshè qù, búyòng zìjǐ zuò gōngkè."],["A","我比较喜欢自助游，可以自己安排路线。","Wǒ bǐjiào xǐhuan zìzhùyóu, kěyǐ zìjǐ ānpái lùxiàn."],["B","自助游要准备很多东西，太麻烦了。","Zìzhùyóu yào zhǔnbèi hěn duō dōngxi, tài máfan le."],["A","可是跟旅行社去，常常是走马观花。","Kěshì gēn lǚxíngshè qù, chángcháng shì zǒumǎ-guānhuā."],["B","那倒是。上次我一天去了五个地方，累得不想说话。","Nà dào shì. Shàng cì wǒ yì tiān qùle wǔ ge dìfang, lèi de bù xiǎng shuōhuà."],["A","看来我们只是旅行的方式不同。","Kànlái wǒmen zhǐshì lǚxíng de fāngshì bùtóng."],["B","对，下次我也试试自助游！","Duì, xià cì wǒ yě shìshi zìzhùyóu!"]]},
+ {icon:"📖",title:"Kể lại một chuyến du lịch chuyên sâu",words:[["深度游","shēndùyóu"],["特色","tèsè"],["欣赏","xīnshǎng"]],
+  dlg:[["A","听说你在大理住了一个月？","Tīngshuō nǐ zài Dàlǐ zhùle yí ge yuè?"],["B","是啊，这次我选择了深度游。","Shì a, zhè cì wǒ xuǎnzéle shēndùyóu."],["A","你每天都做什么？","Nǐ měi tiān dōu zuò shénme?"],["B","早上散一个小时的步，好好儿欣赏那里的风景。","Zǎoshang sàn yí ge xiǎoshí de bù, hǎohāor xīnshǎng nàlǐ de fēngjǐng."],["A","吃的呢？","Chī de ne?"],["B","我跟着当地人吃了好几回特色菜，好吃极了！","Wǒ gēnzhe dāngdìrén chīle hǎojǐ huí tèsè cài, hǎochī jí le!"],["A","看来你玩儿得很开心。","Kànlái nǐ wánr de hěn kāixīn."],["B","对，这次旅行给我留下了很深刻的印象。","Duì, zhè cì lǚxíng gěi wǒ liúxiàle hěn shēnkè de yìnxiàng."]]},
+ {icon:"🍉",title:"Gặp bố của bạn ở siêu thị",words:[["挑选","tiāoxuǎn"],["西瓜","xīguā"],["支付","zhīfù"]],
+  dlg:[["A","叔叔好！您也来买东西啊？","Shūshu hǎo! Nín yě lái mǎi dōngxi a?"],["B","是啊，我来买西瓜。你会挑选西瓜吗？","Shì a, wǒ lái mǎi xīguā. Nǐ huì tiāoxuǎn xīguā ma?"],["A","不会，我买过几次，都不太甜。","Bú huì, wǒ mǎiguo jǐ cì, dōu bú tài tián."],["B","你听，拍一拍，声音好听的就甜。","Nǐ tīng, pāi yi pāi, shēngyīn hǎotīng de jiù tián."],["A","叔叔，您挑得真好！","Shūshu, nín tiāo de zhēn hǎo!"],["B","哈哈，我挑了几十年了。","Hāhā, wǒ tiāole jǐshí nián le."],["A","我没带钱，可以用手机支付吗？","Wǒ méi dài qián, kěyǐ yòng shǒujī zhīfù ma?"],["B","当然可以，现在买什么都能用手机支付。","Dāngrán kěyǐ, xiànzài mǎi shénme dōu néng yòng shǒujī zhīfù."]]}
+];
+
+const shouts=[
+ {vi:"Tôi đã gặp anh ấy một lần.",zh:"我见过他一次。",py:"Wǒ jiànguo tā yí cì."},
+ {vi:"Anh ấy chạy rất nhanh.",zh:"他跑得很快。",py:"Tā pǎo de hěn kuài."},
+ {vi:"Tôi đợi bạn hai mươi phút rồi.",zh:"我等了你二十分钟了。",py:"Wǒ děngle nǐ èrshí fēnzhōng le."},
+ {vi:"Hôm nay lạnh hơn hôm qua năm độ.",zh:"今天比昨天冷五度。",py:"Jīntiān bǐ zuótiān lěng wǔ dù."},
+ {vi:"Bạn đã đến Tây An mấy lần?",zh:"你去过几次西安？",py:"Nǐ qùguo jǐ cì Xī'ān?"},
+ {vi:"Cô ấy nấu ăn rất ngon.",zh:"她做菜做得很好吃。",py:"Tā zuò cài zuò de hěn hǎochī."},
+ {vi:"Tôi muốn thanh toán bằng điện thoại.",zh:"我想用手机支付。",py:"Wǒ xiǎng yòng shǒujī zhīfù."},
+ {vi:"Đi theo tour thường là cưỡi ngựa xem hoa.",zh:"跟旅行社去常常是走马观花。",py:"Gēn lǚxíngshè qù chángcháng shì zǒumǎ-guānhuā."}
+];
+
+const errs=[
+ {g:"情态补语",bad:"他跑的很快。",good:"他跑得很快。",why:"Bổ ngữ tình thái nối bằng \"得\", không phải \"的\"."},
+ {g:"情态补语",bad:"他吃地很多。",good:"他吃得很多。",why:"\"地\" đứng TRƯỚC động từ (trạng ngữ); sau động từ + bổ ngữ phải dùng \"得\"."},
+ {g:"情态补语",bad:"他打篮球得很好。",good:"他打篮球打得很好 / 他篮球打得很好。",why:"Động từ có tân ngữ thì phải lặp lại động từ trước \"得\" (hoặc đưa tân ngữ lên trước)."},
+ {g:"情态补语",bad:"他说得汉语很好。",good:"他汉语说得很好 / 他说汉语说得很好。",why:"Tân ngữ không đứng sau \"得\"."},
+ {g:"情态补语",bad:"他唱歌唱很好听。",good:"他唱歌唱得很好听。",why:"Lặp động từ rồi vẫn phải có \"得\"."},
+ {g:"情态补语",bad:"他很写得好。",good:"他写得很好。",why:"Phó từ mức độ \"很\" nằm trong bổ ngữ, sau \"得\"."},
+ {g:"情态补语",bad:"他不写得好。",good:"他写得不好。",why:"Phủ định bổ ngữ tình thái: đặt \"不\" sau \"得\"."},
+ {g:"情态补语",bad:"他做菜做得好吃不好吃吗？",good:"他做菜做得好吃不好吃？/ 他做菜做得好吃吗？",why:"Câu hỏi chính phản (好吃不好吃) không thêm \"吗\"."},
+ {g:"情态补语",bad:"昨天他睡了得很晚。",good:"昨天他睡得很晚。",why:"Không chen \"了\" giữa động từ và \"得\"."},
+ {g:"情态补语",bad:"我们玩儿得很高兴极了。",good:"我们玩儿得很高兴 / 我们玩儿得高兴极了。",why:"\"很\" và \"极了\" không dùng cùng lúc."},
+ {g:"情态补语",bad:"他的旅行见闻写得极了好。",good:"他的旅行见闻写得好极了。",why:"\"极了\" đứng SAU tính từ: 好极了."},
+ {g:"数量补语",bad:"我见过一次他。",good:"我见过他一次。",why:"Tân ngữ là đại từ chỉ người thì đứng TRƯỚC bổ ngữ số lần."},
+ {g:"数量补语",bad:"我一次见过他。",good:"我见过他一次。",why:"Bổ ngữ số lần đứng sau động từ, không đặt trước động từ."},
+ {g:"数量补语",bad:"你几次来过中国？",good:"你来过中国几次？/ 你来过几次中国？",why:"\"几次\" là bổ ngữ, đứng sau động từ."},
+ {g:"数量补语",bad:"我学了汉语两次。(ý: học 2 năm)",good:"我学了两年汉语。",why:"Nói khoảng thời gian dùng 时量补语 (两年), không dùng số lần (两次)."},
+ {g:"数量补语",bad:"我等了半个小时他。",good:"我等了他半个小时。",why:"Đại từ tân ngữ đứng trước bổ ngữ thời lượng."},
+ {g:"数量补语",bad:"我等他了十分钟。",good:"我等了他十分钟。",why:"\"了\" đứng ngay sau động từ \"等\"."},
+ {g:"数量补语",bad:"我走了二十分钟从学校到宿舍。",good:"我从学校到宿舍走了二十分钟。",why:"Cụm \"从…到…\" đứng trước động từ; thời lượng đứng sau động từ."},
+ {g:"数量补语",bad:"我睡觉了八个小时。",good:"我睡了八个小时(的)觉。",why:"\"睡觉\" là động từ ly hợp: 了 + thời lượng chen giữa \"睡\" và \"觉\"."},
+ {g:"数量补语",bad:"我游泳了一个小时。",good:"我游了一个小时(的)泳。",why:"\"游泳\" là động từ ly hợp."},
+ {g:"数量补语",bad:"我看了电视两个小时。",good:"我看了两个小时(的)电视 / 我看电视看了两个小时。",why:"Tân ngữ danh từ (không phải đại từ) đứng sau thời lượng, hoặc lặp động từ."},
+ {g:"数量补语",bad:"他来中国了三年。",good:"他来中国三年了。",why:"Động từ không kéo dài (来、毕业…): thời lượng đặt sau tân ngữ, chỉ thời gian kể từ khi xảy ra."},
+ {g:"数量补语",bad:"今天十度比昨天低。",good:"今天比昨天低十度。",why:"Mức chênh lệch (比较数量补语) đứng SAU tính từ."},
+ {g:"数量补语",bad:"他比我三岁大。",good:"他比我大三岁。",why:"Mức chênh lệch đứng sau tính từ: 大三岁."},
+ {g:"数量补语",bad:"哥哥比我高得五厘米。",good:"哥哥比我高五厘米。",why:"Bổ ngữ số lượng so sánh gắn trực tiếp sau tính từ, không có \"得\"."},
+ {g:"Từ vựng bài 4",bad:"出发之前，要写很多功课。",good:"出发之前，要做很多功课。",why:"Kết hợp cố định: 做功课."},
+ {g:"Từ vựng bài 4",bad:"我很欣赏去西安。",good:"我很想去西安。",why:"\"欣赏\" + người/phong cảnh/tác phẩm, không + hành động muốn làm."},
+ {g:"Từ vựng bài 4",bad:"他挑选西瓜很会。",good:"他很会挑选西瓜。",why:"\"会\" (giỏi, biết) đứng trước động từ."},
+ {g:"Từ vựng bài 4",bad:"我用手机支付钱。",good:"我用手机支付 / 我用手机付钱。",why:"\"支付\" đã có nghĩa trả tiền, không thêm \"钱\"."},
+ {g:"Từ vựng bài 4",bad:"我一到假期，才喜欢去旅行。",good:"我一到假期，就喜欢去旅行。",why:"Cấu trúc \"一…就…\"."},
+ {g:"Từ vựng bài 4",bad:"只要有空儿，他才带着全家去旅行。",good:"只要有空儿，他就带着全家去旅行。",why:"\"只要…就…\" (chỉ cần… là…)."},
+ {g:"Từ vựng bài 4",bad:"我在那儿住了一个月，好好儿走马观花了一下。",good:"我在那儿住了一个月，好好儿欣赏了一下。",why:"\"走马观花\" nghĩa là xem qua loa — trái nghĩa với ở lâu, xem kỹ."},
+ {g:"Từ vựng bài 4",bad:"自助游能让人保持热情对生活。",good:"自助游能让人保持对生活的热情。",why:"\"对…的热情\": cụm \"对…\" làm định ngữ đứng trước \"热情\"."},
+ {g:"Từ vựng bài 4",bad:"这次旅行留下了我深刻的印象。",good:"这次旅行给我留下了深刻的印象。",why:"Cấu trúc \"给 + người + 留下…印象\"."},
+ {g:"Từ vựng bài 4",bad:"我一样跟我爸爸喜欢自助游。",good:"我跟我爸爸一样，喜欢自助游。",why:"Cấu trúc \"A 跟 B 一样\"."},
+ {g:"Từ vựng bài 4",bad:"我喜欢旅行有很大的关系跟我爸爸。",good:"我喜欢旅行跟我爸爸有很大的关系。",why:"\"跟…有关系\": \"跟…\" đứng trước \"有关系\"."},
+ {g:"Từ vựng bài 4",bad:"我看来他很累。",good:"看来他很累 / 在我看来，他很累。",why:"\"看来\" đứng đầu câu; muốn nêu người nhận định dùng \"在我看来\"."},
+ {g:"Từ vựng bài 4",bad:"昨天我听了一个音乐会。",good:"昨天我听了一场音乐会。",why:"Lượng từ của \"音乐会\" là \"场\"."},
+ {g:"Từ vựng bài 4",bad:"最重要的要准备好一个银行卡。",good:"最重要的要准备好一张银行卡。",why:"Lượng từ của \"卡\" là \"张\"."},
+ {g:"Nâng cao HSK4",bad:"不但应该多读书，但是应该多去旅行。",good:"不但应该多读书，而且/还应该多去旅行。",why:"\"不但…而且/还…\" là cặp tăng tiến, không dùng \"但是\"."},
+ {g:"Nâng cao HSK4",bad:"他去西安为了是看兵马俑。",good:"他去西安是为了看兵马俑。",why:"Cấu trúc \"是为了 + mục đích\"."},
+ {g:"Nâng cao HSK4",bad:"再过几天就要放假。",good:"再过几天就要放假了。",why:"\"就要…了\" (sắp… rồi) cần \"了\" cuối câu."},
+ {g:"Nâng cao HSK4",bad:"他带全家着去旅行。",good:"他带着全家去旅行。",why:"\"着\" đứng ngay sau động từ \"带\", trước tân ngữ."},
+ {g:"Nâng cao HSK4",bad:"我背包着去旅行。",good:"我背着包去旅行。",why:"\"背着包\": \"着\" sau động từ \"背\", trước tân ngữ \"包\"."},
+ {g:"Nâng cao HSK4",bad:"先了解信息，以后自己安排路线。",good:"先了解信息，然后自己安排路线。",why:"Trình tự hành động dùng \"先…然后/再…\"; \"以后\" chỉ thời gian sau này."},
+ {g:"Nâng cao HSK4",bad:"我们能一起去不能自助游？",good:"我们能不能一起去自助游？",why:"Câu hỏi chính phản: \"能不能\" đặt liền nhau trước động từ."},
+ {g:"Nâng cao HSK4",bad:"我是去年去西安。",good:"我是去年去西安的 / 我是去年去的西安。",why:"Cấu trúc nhấn mạnh \"是…的\" cần \"的\"."},
+ {g:"Nâng cao HSK4",bad:"除了兵马俑以外，我们去了古城墙。",good:"除了兵马俑以外，我们还去了古城墙。",why:"\"除了…以外\" nghĩa \"ngoài… còn\" cần \"还/也\"."},
+ {g:"Nâng cao HSK4",bad:"我把机票订。",good:"我把机票订好了。",why:"Câu \"把\" cần thành phần khác sau động từ (好、了…)."},
+ {g:"Nâng cao HSK4",bad:"这家酒店比那家一点儿便宜。",good:"这家酒店比那家便宜一点儿。",why:"\"一点儿\" chỉ mức chênh lệch, đứng sau tính từ."},
+ {g:"Nâng cao HSK4",bad:"西安我去年去过，明年我又想去。",good:"西安我去年去过，明年我还想再去一次。",why:"\"又\" cho việc đã lặp lại; việc sẽ lặp lại dùng \"再\"."},
+ {g:"Nâng cao HSK4",bad:"我离开了从西安。",good:"我离开了西安 / 我从西安离开了。",why:"\"离开\" mang tân ngữ trực tiếp; \"从…\" phải đứng trước động từ."}
+];
+
+/* ============ TIỆN ÍCH ============ */
+let zhVoice=null;
+function pickVoice(){zhVoice=(speechSynthesis.getVoices().find(v=>v.lang&&v.lang.toLowerCase().startsWith('zh')))||null}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+function speak(t){if(!('speechSynthesis' in window))return;const u=new SpeechSynthesisUtterance(t);u.lang='zh-CN';if(zhVoice)u.voice=zhVoice;u.rate=.85;speechSynthesis.cancel();speechSynthesis.speak(u)}
+const $=id=>document.getElementById(id);
+function pickNoRepeat(arr,state){
+  if(!state.pool||!state.pool.length){state.pool=arr.map((_,i)=>i).sort(()=>Math.random()-.5);state.round=(state.round||0)+1}
+  return state.pool.pop();
+}
+function makeTimer(el,secs,fmt){
+  let t=null,left=secs;
+  const show=()=>{el.textContent=fmt?fmt(left):left;el.classList.toggle('low',left<=3)};
+  return {start(){clearInterval(t);left=secs;show();t=setInterval(()=>{left--;show();if(left<=0){clearInterval(t);el.textContent=fmt?fmt(0):'0 ⏰';try{new (window.AudioContext||window.webkitAudioContext)().resume()}catch(e){}}},1000)},
+          reset(){clearInterval(t);left=secs;show()}};
+}
+
+/* ============ TAB ============ */
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');$('panel-'+b.dataset.tab).classList.add('active');
+}));
+
+/* ============ HÌNH THỨC 1 ============ */
+const st1={};let cur1=null;
+const tm1=makeTimer($('timer1'),10);
+$('togglePy').addEventListener('change',e=>$('deck').classList.toggle('hide-py',!e.target.checked));
+$('drawCard').addEventListener('click',()=>{
+  const i=pickNoRepeat(cards,st1);cur1=cards[i];tm1.reset();
+  $('deck').innerHTML=`<div class="num">Thẻ #${i+1} / ${cards.length}</div><div class="vi">${cur1.vi}</div>
+   <div class="ans" id="ans"><div class="zh">${cur1.zh}</div><div class="py pinyin">${cur1.py}</div><div class="tag" style="margin-top:6px">Từ/ngữ pháp trọng tâm: ${cur1.tip}</div></div>`;
+  $('deck').classList.toggle('hide-py',!$('togglePy').checked);
+  $('deckInfo').textContent=`Vòng ${st1.round} · còn ${st1.pool.length} thẻ trước khi xáo lại.`;
+});
+$('startTimer1').addEventListener('click',()=>tm1.start());
+$('showAns').addEventListener('click',()=>{const a=$('ans');if(a)a.classList.toggle('show')});
+$('speakAns').addEventListener('click',()=>{if(cur1)speak(cur1.zh)});
+
+/* ============ HÌNH THỨC 2 ============ */
+const st2={};let curS=null,curShout=null;const stShout={};
+const tm2=makeTimer($('timer2'),120,s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0'));
+$('startTimer2').addEventListener('click',()=>tm2.start());
+$('drawScene').addEventListener('click',()=>{
+  const i=pickNoRepeat(scenes,st2);curS=scenes[i];tm2.reset();
+  $('sceneBox').innerHTML=`<div style="font-size:2.4rem">${curS.icon}</div><h3>${curS.title}</h3>
+   <div class="tag">Từ bắt buộc:</div><div class="chips">${curS.words.map(w=>`<span class="chip">${w[0]}<span class="pinyin">${w[1]}</span></span>`).join('')}</div>`;
+  $('sceneExtra').style.display='block';
+  $('dlgBox').style.display='none';
+  $('dlgBox').innerHTML=curS.dlg.map(l=>`<div class="ln"><div class="sp">${l[0]}</div><div><div class="hz">${l[1]}</div><div class="pinyin">${l[2]}</div></div></div>`).join('');
+  document.querySelectorAll('.checklist input').forEach(c=>c.checked=false);
+  $('shoutBox').textContent='—';
+});
+$('showDlg').addEventListener('click',()=>{const b=$('dlgBox');b.style.display=b.style.display==='none'?'block':'none'});
+$('drawShout').addEventListener('click',()=>{curShout=shouts[pickNoRepeat(shouts,stShout)];$('shoutBox').innerHTML=`<b style="font-size:1.05rem">${curShout.vi}</b>`});
+$('showShout').addEventListener('click',()=>{if(curShout)$('shoutBox').innerHTML=`<b>${curShout.vi}</b><div class="hz-s" style="font-size:1.2rem;color:var(--m9)">${curShout.zh}</div><div class="pinyin">${curShout.py}</div>`});
+
+/* ============ HÌNH THỨC 3 ============ */
+const st3={};let curE=null;
+$('drawErr').addEventListener('click',()=>{
+  curE=errs[pickNoRepeat(errs,st3)];
+  $('errBox').innerHTML=`<div class="tag">Nhóm lỗi: ${curE.g} — tìm và sửa:</div><div class="zh" style="font-family:'Noto Serif SC',serif;font-size:1.5rem;font-weight:700">${curE.bad}</div>
+  <div class="ans" id="errAns"><div class="right hz-s" style="font-size:1.3rem">✓ ${curE.good}</div><div class="tag">${curE.why}</div></div>`;
+});
+$('showErr').addEventListener('click',()=>{const a=$('errAns');if(a)a.classList.toggle('show')});
+$('errTable').innerHTML='<tr><th>Nhóm</th><th>Câu sai</th><th>Sửa đúng</th><th>Lý do</th></tr>'+errs.map(e=>`<tr><td>${e.g}</td><td class="hz-s wrong">${e.bad}</td><td class="hz-s right">${e.good}</td><td>${e.why}</td></tr>`).join('');
+
+/* ============ IN THẺ ============ */
+$('printTable').innerHTML='<tr><th>#</th><th>Tiếng Việt</th><th>Tiếng Trung + pinyin</th></tr>'+cards.map((c,i)=>`<tr><td>${i+1}</td><td>${c.vi}</td><td><span class="hz-s">${c.zh}</span><br><span class="pinyin">${c.py}</span></td></tr>`).join('');
+</script>
+</body>
+</html>
